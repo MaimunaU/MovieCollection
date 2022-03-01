@@ -169,12 +169,65 @@ public class MovieCollection
 
   private void searchKeywords()
   {
-    /* TASK 3: IMPLEMENT ME! */
+    System.out.print("Enter a keyword search term: ");
+    String searchTerm = scanner.nextLine();
+    searchTerm = searchTerm.toLowerCase();
+
+    ArrayList<Movie> results = new ArrayList<Movie>();
+
+    for (int i = 0; i < movies.size(); i++)
+    {
+      String keywords = movies.get(i).getKeywords();
+
+      if (keywords.indexOf(searchTerm) != -1)
+      {
+        results.add(movies.get(i));
+      }
+    }
+
+    sortResults(results);
+    for (int i = 0; i < results.size(); i++)
+    {
+      String title = results.get(i).getTitle();
+      int choiceNum = i + 1;
+      System.out.println("" + choiceNum + ". " + title);
+    }
+
+    System.out.println("Which movie would you like to learn more about?");
+    System.out.print("Enter number: ");
+    int choice = scanner.nextInt();
+    scanner.nextLine();
+    Movie selectedMovie = results.get(choice - 1);
+    displayMovieInfo(selectedMovie);
+    System.out.println("\n ** Press Enter to Return to Main Menu **");
+    scanner.nextLine();
   }
   
   private void listGenres()
   {
-    /* TASK 5: IMPLEMENT ME! */
+    ArrayList<Movie> results = new ArrayList<Movie>();
+    ArrayList<String> separateGenres = new ArrayList<>();
+
+    for (int i = 0; i < movies.size(); i++)
+    {
+      String[] genres = movies.get(i).getGenres().split("\\|");
+      for (int j = 0; j < genres.length; j++)
+      {
+        if (separateGenres.indexOf(genres[j]) == -1)
+        {
+          separateGenres.add(genres[j]);
+
+        }
+      }
+    }
+
+    insertionSort(separateGenres);
+    for (int j = 0; j < separateGenres.size(); j++)
+    {
+      String genre = separateGenres.get(j);
+      int choiceNum = j + 1;
+      System.out.println("" + choiceNum + ". " + genre);
+    }
   }
   
   private void listHighestRated()
@@ -230,7 +283,23 @@ public class MovieCollection
       System.out.println("Unable to access " + exception.getMessage());
     }
   }
-  
-  // ADD ANY ADDITIONAL PRIVATE HELPER METHODS you deem necessary
+
+  private void insertionSort(ArrayList<String> words)
+  {
+    int count = 0;
+    for (int j = 1; j < words.size(); j++)
+    {
+      String temp = words.get(j);
+      int possibleIndex = j;
+      while (possibleIndex > 0 && temp.compareTo(words.get(possibleIndex - 1)) < 0)
+      {
+        count++;
+        words.set(possibleIndex, words.get(possibleIndex - 1));
+        possibleIndex--;
+      }
+      words.set(possibleIndex, temp);
+    }
+  }
+
 
 }
