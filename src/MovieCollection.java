@@ -192,10 +192,13 @@ public class MovieCollection
 
     for (int i = 0; i < movies.size(); i++)
     {
-      String cast = movies.get(i).getCast();
-      if (cast.indexOf(selectedCast) != -1)
+      String[] cast = movies.get(i).getCast().split("\\|");
+      for (int j = 0; j < cast.length; j++)
       {
-        results.add(movies.get(i));
+        if (cast[j].equals(selectedCast))
+        {
+          results.add(movies.get(i));
+        }
       }
     }
 
