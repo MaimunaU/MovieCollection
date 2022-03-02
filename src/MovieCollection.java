@@ -84,35 +84,24 @@ public class MovieCollection
   {
     System.out.print("Enter a title search term: ");
     String searchTerm = scanner.nextLine();
-
-    // prevent case sensitivity
     searchTerm = searchTerm.toLowerCase();
-
-    // arraylist to hold search results
     ArrayList<Movie> results = new ArrayList<Movie>();
 
-    // search through ALL movies in collection
     for (int i = 0; i < movies.size(); i++)
     {
       String movieTitle = movies.get(i).getTitle();
       movieTitle = movieTitle.toLowerCase();
-
       if (movieTitle.indexOf(searchTerm) != -1)
       {
-        //add the Movie objest to the results list
         results.add(movies.get(i));
       }
     }
 
-    // sort the results by title
     sortResults(results);
-
-    // now, display them all to the user
     for (int i = 0; i < results.size(); i++)
     {
       String title = results.get(i).getTitle();
 
-      // this will print index 0 as choice 1 in the results list; better for user!
       int choiceNum = i + 1;
 
       System.out.println("" + choiceNum + ". " + title);
@@ -120,14 +109,10 @@ public class MovieCollection
 
     System.out.println("Which movie would you like to learn more about?");
     System.out.print("Enter number: ");
-
     int choice = scanner.nextInt();
     scanner.nextLine();
-
     Movie selectedMovie = results.get(choice - 1);
-
     displayMovieInfo(selectedMovie);
-
     System.out.println("\n ** Press Enter to Return to Main Menu **");
     scanner.nextLine();
   }
@@ -236,7 +221,6 @@ public class MovieCollection
     System.out.print("Enter a keyword search term: ");
     String searchTerm = scanner.nextLine();
     searchTerm = searchTerm.toLowerCase();
-
     ArrayList<Movie> results = new ArrayList<Movie>();
 
     for (int i = 0; i < movies.size(); i++)
@@ -348,11 +332,8 @@ public class MovieCollection
 
       while ((line = bufferedReader.readLine()) != null)
       {
-        // import all cells for a single row as an array of Strings,
-        // then convert to ints as needed
         String[] movieFromCSV = line.split(",");
 
-        // pull out the data for this cereal
         String title = movieFromCSV[0];
         String cast = movieFromCSV[1];
         String director = movieFromCSV[2];
@@ -365,17 +346,14 @@ public class MovieCollection
         int year = Integer.parseInt(movieFromCSV[9]);
         int revenue = Integer.parseInt(movieFromCSV[10]);
 
-        // create Cereal object to store values
         Movie nextMovie = new Movie(title, cast, director, tagline, keywords, overview, runtime, genres, userRating, year, revenue);
 
-        // adding Cereal object to the arraylist
         movies.add(nextMovie);
       }
       bufferedReader.close();
     }
     catch(IOException exception)
     {
-      // Print out the exception that occurred
       System.out.println("Unable to access " + exception.getMessage());
     }
   }
