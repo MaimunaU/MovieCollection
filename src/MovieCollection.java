@@ -186,7 +186,7 @@ public class MovieCollection
 
     for (int i = 0; i < separateCast.size(); i++)
     {
-      if (separateCast.get(i).toLowerCase().equals(name))
+      if (separateCast.get(i).toLowerCase().indexOf(name) != -1)
       {
         castResults.add(separateCast.get(i));
       }
