@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -164,7 +165,70 @@ public class MovieCollection
   
   private void searchCast()
   {
-    /* TASK 4: IMPLEMENT ME! */
+    System.out.print("Enter a person to search for (first or last name): ");
+    String name = scanner.nextLine();
+    name = name.toLowerCase();
+    ArrayList<Movie> results = new ArrayList<Movie>();
+    ArrayList<String> separateCast = new ArrayList<>();
+    ArrayList<String> castResults = new ArrayList<>();
+
+    for (int i = 0; i < movies.size(); i++)
+    {
+      String[] cast = movies.get(i).getCast().split("\\|");
+      for (int j = 0; j < cast.length; j++)
+      {
+        if (separateCast.indexOf(cast[j]) == -1)
+        {
+          separateCast.add(cast[j]);
+        }
+      }
+    }
+
+    for (int i = 0; i < separateCast.size(); i++)
+    {
+      if (separateCast.get(i).toLowerCase().equals(name))
+      {
+        castResults.add(separateCast.get(i));
+      }
+    }
+
+    insertionSortStrings(castResults);
+    for (int i = 0; i < castResults.size(); i++)
+    {
+      int choiceNum = i + 1;
+      System.out.println("" + choiceNum + ". " + castResults.get(i));
+    }
+
+    System.out.println("Which would you like to see all movies for?");
+    System.out.print("Enter number: ");
+    int choice = scanner.nextInt();
+    scanner.nextLine();
+    String selectedCast = castResults.get(choice - 1);
+
+    for (int i = 0; i < movies.size(); i++)
+    {
+      String cast = movies.get(i).getCast();
+      if (cast.indexOf(selectedCast) != -1)
+      {
+        results.add(movies.get(i));
+      }
+    }
+
+    for (int i = 0; i < results.size(); i++)
+    {
+      String title = results.get(i).getTitle();
+      int choiceNum = i + 1;
+      System.out.println("" + choiceNum + ". " + title);
+    }
+
+    System.out.println("Which movie would you like to learn more about?");
+    System.out.print("Enter number: ");
+    int choice2 = scanner.nextInt();
+    scanner.nextLine();
+    Movie selectedMovie = results.get(choice2 - 1);
+    displayMovieInfo(selectedMovie);
+    System.out.println("\n ** Press Enter to Return to Main Menu **");
+    scanner.nextLine();
   }
 
   private void searchKeywords()
@@ -221,13 +285,45 @@ public class MovieCollection
       }
     }
 
-    insertionSort(separateGenres);
+    insertionSortStrings(separateGenres);
     for (int j = 0; j < separateGenres.size(); j++)
     {
       String genre = separateGenres.get(j);
       int choiceNum = j + 1;
       System.out.println("" + choiceNum + ". " + genre);
     }
+
+    System.out.println("Which would you like to see all movies for?");
+    System.out.print("Enter number: ");
+    int choice = scanner.nextInt();
+    scanner.nextLine();
+    String selectedGenre = separateGenres.get(choice - 1);
+
+    for (int i = 0; i < movies.size(); i++)
+    {
+      String genres = movies.get(i).getGenres();
+      if (genres.indexOf(selectedGenre) != -1)
+      {
+        results.add(movies.get(i));
+      }
+    }
+
+    sortResults(results);
+    for (int i = 0; i < results.size(); i++)
+    {
+      String title = results.get(i).getTitle();
+      int choiceNum = i + 1;
+      System.out.println("" + choiceNum + ". " + title);
+    }
+
+    System.out.println("Which movie would you like to learn more about?");
+    System.out.print("Enter number: ");
+    int choice2 = scanner.nextInt();
+    scanner.nextLine();
+    Movie selectedMovie = results.get(choice2 - 1);
+    displayMovieInfo(selectedMovie);
+    System.out.println("\n ** Press Enter to Return to Main Menu **");
+    scanner.nextLine();
   }
   
   private void listHighestRated()
@@ -284,7 +380,7 @@ public class MovieCollection
     }
   }
 
-  private void insertionSort(ArrayList<String> words)
+  private void insertionSortStrings(ArrayList<String> words)
   {
     int count = 0;
     for (int j = 1; j < words.size(); j++)
@@ -300,6 +396,4 @@ public class MovieCollection
       words.set(possibleIndex, temp);
     }
   }
-
-
 }
